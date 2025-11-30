@@ -1,53 +1,37 @@
 /* Services Sliding Blob Effect */
-(function(){
+(function () {
   const frame = document.querySelector('.pp-services-frame');
-  if(!frame) return;
+  if (!frame) return;
   const list = frame.querySelector('.pp-service-list');
-  if(!list) return;
+  if (!list) return;
 
   // create blob
   let blob = frame.querySelector('.pp-active-blob');
-  if(!blob){ 
-    blob = document.createElement('div'); 
-    blob.className = 'pp-active-blob'; 
-    frame.appendChild(blob); 
+  if (!blob) {
+    blob = document.createElement('div');
+    blob.className = 'pp-active-blob';
+    frame.appendChild(blob);
   }
 
   const items = Array.from(list.querySelectorAll('.pp-service-item'));
-  if(!items.length) return;
+  if (!items.length) return;
 
-  function clearBlobActive(){ 
-    items.forEach(i => i.classList.remove('pp-blob-active')); 
+  function clearBlobActive() {
+    items.forEach(i => i.classList.remove('pp-blob-active'));
   }
 
-  function moveBlobTo(el){
-    if(!el) return;
-    var r = el.getBoundingClientRect();
-    var p = frame.getBoundingClientRect();
-    var leftBuffer = 14; 
-    var left = r.left - p.left - leftBuffer;
-    var top = r.top - p.top;
+  function moveBlobTo(el) {
+    if (!el) return;
 
-    var arrowEl = el.querySelector && (el.querySelector('.pp-arrow') || el.querySelector('svg'));
-    var calculatedWidth;
+    // Use offset properties for accurate relative positioning
+    var left = el.offsetLeft;
+    var top = el.offsetTop;
+    var width = el.offsetWidth;
+    var height = el.offsetHeight;
 
-    if (arrowEl) {
-      var aRect = arrowEl.getBoundingClientRect();
-      var arrowRight = aRect.right - p.left;
-      var buffer = -24;
-      calculatedWidth = Math.round(arrowRight - left - buffer);
-    }
-
-    if (!calculatedWidth || calculatedWidth <= 0 || !isFinite(calculatedWidth)) {
-      calculatedWidth = Math.round(r.width);
-    }
-
-    var minWidth = 40;
-    if (calculatedWidth < minWidth) calculatedWidth = minWidth;
-
-    blob.style.width = calculatedWidth + 'px';
-    blob.style.height = Math.round(r.height) + 'px';
-    blob.style.transform = 'translate3d(' + Math.round(left) + 'px,' + Math.round(top) + 'px,0)';
+    blob.style.width = width + 'px';
+    blob.style.height = height + 'px';
+    blob.style.transform = 'translate3d(' + left + 'px,' + top + 'px,0)';
 
     clearBlobActive();
     el.classList.add('pp-blob-active');
@@ -65,7 +49,7 @@
   // when leaving list, return to default after short delay
   let leaveTimer = null;
   list.addEventListener('mouseleave', () => {
-    if(leaveTimer) clearTimeout(leaveTimer);
+    if (leaveTimer) clearTimeout(leaveTimer);
     leaveTimer = setTimeout(() => moveBlobTo(defaultItem), 300);
   });
 
@@ -81,28 +65,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const sideOverlay = document.getElementById('sideOverlay');
   const panelClose = document.getElementById('panelClose');
 
-  function openPanel(){
+  function openPanel() {
     sidePanel.classList.add('open');
     sideOverlay.classList.add('open');
-    sidePanel.setAttribute('aria-hidden','false');
-    sideOverlay.setAttribute('aria-hidden','false');
-    hamburgerBtn?.setAttribute('aria-expanded','true');
+    sidePanel.setAttribute('aria-hidden', 'false');
+    sideOverlay.setAttribute('aria-hidden', 'false');
+    hamburgerBtn?.setAttribute('aria-expanded', 'true');
     panelClose?.focus();
   }
 
-  function closePanel(){
+  function closePanel() {
     sidePanel.classList.remove('open');
     sideOverlay.classList.remove('open');
-    sidePanel.setAttribute('aria-hidden','true');
-    sideOverlay.setAttribute('aria-hidden','true');
-    hamburgerBtn?.setAttribute('aria-expanded','false');
+    sidePanel.setAttribute('aria-hidden', 'true');
+    sideOverlay.setAttribute('aria-hidden', 'true');
+    hamburgerBtn?.setAttribute('aria-expanded', 'false');
     hamburgerBtn?.focus();
   }
 
   // toggle aria-expanded and open panel
   hamburgerBtn?.addEventListener('click', () => {
     const isOpen = sidePanel.classList.contains('open');
-    if(isOpen) closePanel(); else openPanel();
+    if (isOpen) closePanel(); else openPanel();
   });
 
   panelClose?.addEventListener('click', closePanel);
@@ -110,21 +94,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Close with Escape
   document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape' && sidePanel.classList.contains('open')) closePanel();
+    if (e.key === 'Escape' && sidePanel.classList.contains('open')) closePanel();
   });
 
   // Helper: attach smooth-center scroll after closing panel
-  function handlePanelNavigationElement(el){
+  function handlePanelNavigationElement(el) {
     el.addEventListener('click', (ev) => {
       // only handle same-page anchors
       const href = el.getAttribute('href');
-      if(!href || !href.startsWith('#')) return;
+      if (!href || !href.startsWith('#')) return;
       ev.preventDefault();
       // close panel immediately
       closePanel();
       // small delay to allow close animation then center-scroll
       setTimeout(() => {
-        document.querySelector(href)?.scrollIntoView({behavior:'smooth', block:'center'});
+        document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 240);
     });
   }
@@ -133,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.panel-link').forEach(handlePanelNavigationElement);
 
   // ALSO attach to any links/buttons inside the mobile panel (CTA, other anchors)
-  if(sidePanel){
+  if (sidePanel) {
     sidePanel.querySelectorAll('a[href]').forEach(el => {
       handlePanelNavigationElement(el);
     });
@@ -144,15 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* Works Modal Logic */
-(function(){
+(function () {
   // Defensive modal implementation for Works view buttons
-  function ensureModal(){
+  function ensureModal() {
     var m = document.getElementById('ppModal');
-    if(m) return m;
+    if (m) return m;
     m = document.createElement('div');
     m.id = 'ppModal';
-    m.setAttribute('role','dialog');
-    m.setAttribute('aria-hidden','true');
+    m.setAttribute('role', 'dialog');
+    m.setAttribute('aria-hidden', 'true');
     m.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:11000;align-items:center;justify-content:center;';
     m.innerHTML = `
       <div class="pp-modal-card" style="position:relative;background:#fff;border-radius:12px;max-width:92%;max-height:92%;overflow:auto;box-shadow:0 30px 60px rgba(3,6,12,0.3);">
@@ -165,81 +149,81 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Open modal with given image src
-  function openModalWithSrc(src){
-    if(!src) return;
+  function openModalWithSrc(src) {
+    if (!src) return;
     var modal = ensureModal();
     var img = modal.querySelector('#ppImg');
-    if(img){ img.src = src; }
+    if (img) { img.src = src; }
     modal.style.display = 'flex';
-    modal.setAttribute('aria-hidden','false');
-    var closeBtn = modal.querySelector('#ppClose'); if(closeBtn) closeBtn.focus();
+    modal.setAttribute('aria-hidden', 'false');
+    var closeBtn = modal.querySelector('#ppClose'); if (closeBtn) closeBtn.focus();
   }
 
   // Close modal
-  function closeModal(){
+  function closeModal() {
     var m = document.getElementById('ppModal');
-    if(!m) return;
+    if (!m) return;
     m.style.display = 'none';
-    m.setAttribute('aria-hidden','true');
-    var img = m.querySelector('#ppImg'); if(img) img.src = '';
+    m.setAttribute('aria-hidden', 'true');
+    var img = m.querySelector('#ppImg'); if (img) img.src = '';
   }
 
   // Delegate click for view buttons
-  document.addEventListener('click', function(ev){
-    try{
+  document.addEventListener('click', function (ev) {
+    try {
       var t = ev.target;
-      if(!t) return;
+      if (!t) return;
 
       // If clicked inside a .view-btn (or the button itself)
       var btn = t.closest ? t.closest('.view-btn') : null;
-      if(btn){
+      if (btn) {
         ev.preventDefault();
         var card = btn.closest ? btn.closest('.work-box') : null;
         var image = card && card.querySelector ? card.querySelector('img') : null;
         var src = image ? (image.getAttribute('data-src') || image.src) : null;
-        if(src) openModalWithSrc(src);
+        if (src) openModalWithSrc(src);
         return;
       }
 
       // Close triggers: close button or backdrop
-      if(t.id === 'ppClose' || t.id === 'ppModal'){
+      if (t.id === 'ppClose' || t.id === 'ppModal') {
         closeModal();
         return;
       }
-    }catch(err){
+    } catch (err) {
       console.warn('Works modal handler error', err);
     }
   }, false);
 
   // Prevent modal closing when clicking inside the card
-  document.addEventListener('click', function(e){
-    if(!e || !e.target) return;
+  document.addEventListener('click', function (e) {
+    if (!e || !e.target) return;
     var inside = e.target.closest && e.target.closest('.pp-modal-card');
-    if(inside && !(e.target.id === 'ppClose')){
+    if (inside && !(e.target.id === 'ppClose')) {
       e.stopPropagation();
     }
   }, true);
 
   // ESC to close
-  document.addEventListener('keydown', function(e){
-    if(e && e.key === 'Escape'){
+  document.addEventListener('keydown', function (e) {
+    if (e && e.key === 'Escape') {
       var m = document.getElementById('ppModal');
-      if(m && m.style && m.style.display === 'flex') closeModal();
+      if (m && m.style && m.style.display === 'flex') closeModal();
     }
   });
 
   // also add a simple safety: ensure existing inline links to #works scroll center
-  try{
+  try {
     var links = document.querySelectorAll('a[href="#works"]');
-    for(var i=0;i<links.length;i++){
-      (function(link){
-        link.addEventListener('click', function(ev){ 
-          ev.preventDefault(); 
-          var target = document.querySelector('#works-card') || document.querySelector('#works'); 
-          if(target) target.scrollIntoView({behavior:'smooth', block:'center'}); 
+    for (var i = 0; i < links.length; i++) {
+      (function (link) {
+        link.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          var target = document.querySelector('#works-card') || document.querySelector('#works');
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         });
       })(links[i]);
     }
-  }catch(e){/* ignore */}
+  } catch (e) {/* ignore */ }
 
 })();
