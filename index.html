@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Pitchpouch - Premium Pitch Deck Design</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="contact.css">
+
     <script src="script.js" defer></script>
 </head>
 
@@ -14,6 +14,95 @@
     <!-- SECTION: HERO NAV + BG START -->
     <div class="site">
         <div class="bg-block" aria-hidden="true"></div>
+        <div class="viewport-overlay" aria-hidden="true"></div>
+
+        <!-- Desktop Background Rulers -->
+        <div class="bg-rulers" aria-hidden="true">
+            <div class="ruler-left">
+                <div class="ruler-num">104</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">152</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">295</div>
+                <div class="ruler-num">349</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">412</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">468</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">574</div>
+                <div class="ruler-num">681</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">795</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">823</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">914</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">042</div>
+                <div class="ruler-num">118</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">256</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">333</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">491</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">555</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">672</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">789</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">845</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">991</div>
+            </div>
+            <div class="ruler-right">
+                <div class="ruler-num"></div>
+                <div class="ruler-num">104</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">152</div>
+                <div class="ruler-num">228</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">349</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">412</div>
+                <div class="ruler-num">468</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">574</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">681</div>
+                <div class="ruler-num">795</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">823</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">914</div>
+                <div class="ruler-num">042</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">118</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">256</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">333</div>
+                <div class="ruler-num">491</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">555</div>
+                <div class="ruler-num">672</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">789</div>
+                <div class="ruler-num"></div>
+                <div class="ruler-num">845</div>
+                <div class="ruler-num">991</div>
+            </div>
+        </div>
 
         <header>
             <div class="container">
@@ -68,6 +157,7 @@
                     <a href="#works"
                         onclick="event.preventDefault(); document.querySelector('#works')?.scrollIntoView({behavior:'smooth', block:'center'});">Our
                         works</a>
+                    <a href="#blogs" onclick="event.preventDefault();">Blogs</a>
                 </nav>
 
                 <div class="nav-right">
@@ -93,6 +183,7 @@
             <!-- Mirror desktop nav: primary link + CTA -->
             <nav class="mobile-nav-list">
                 <a href="#works" class="panel-link">Our works</a>
+                <a href="#blogs" class="panel-link">Blogs</a>
                 <a href="#services" class="panel-link">Services</a>
                 <a href="#contact" class="panel-link">Contact</a>
             </nav>
@@ -184,7 +275,7 @@
                         <div id="pp-impact-section" aria-labelledby="pp-impact-title">
                             <div class="impact-top">
                                 <div class="impact-left">
-                                    <div class="impact-number">$12M+</div>
+                                    <div class="impact-number">$<span id="impact-counter">0</span>M+</div>
                                 </div>
                                 <div class="impact-pill-wrapper">
                                     <div class="impact-pill" aria-hidden="false">• Our Impact</div>

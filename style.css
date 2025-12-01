@@ -46,6 +46,7 @@ body {
   will-change: transform;
   animation: floatBG 10s ease-in-out infinite;
   pointer-events: none;
+  filter: blur(2.5px);
 }
 
 @keyframes floatBG {
@@ -87,7 +88,7 @@ header .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 12px;
   flex-wrap: nowrap;
   width: 100%;
 }
@@ -101,7 +102,7 @@ header .container {
 .center-nav {
   display: flex;
   justify-content: flex-end;
-  gap: 24px;
+  gap: 12px;
   align-items: center;
   flex: 1;
 }
@@ -110,13 +111,15 @@ header .container {
   color: #6b7280;
   text-decoration: none;
   font-weight: 600;
-  font-size: 18px;
-  padding: 8px 4px;
-  border-radius: 6px;
+  font-size: 16px;
+  padding: 10px 22px;
+  border-radius: 28px;
+  transition: .25s;
 }
 
 .center-nav a:hover {
-  color: #111827;
+  background: #1647FF;
+  color: #fff;
 }
 
 .nav-right {
@@ -870,6 +873,8 @@ a.btn:hover {
 /* Footer */
 .footer-container {
   text-align: center;
+  position: relative;
+  z-index: 10;
 }
 
 .footer-text {
@@ -879,4 +884,376 @@ a.btn:hover {
 
 .spacer {
   height: 10px;
+}
+
+/* Desktop Background Rulers */
+.bg-rulers {
+  display: none;
+  position: absolute;
+  /* Scrolls with page */
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 940px;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  /* Prevent numbers from spilling out bottom */
+}
+
+/* Fixed overlay to fade top/bottom of viewport */
+.viewport-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  /* Above rulers (1), below content (5+) */
+  background: linear-gradient(to bottom,
+      #eaf2ff 0%,
+      #eaf2ff 10%,
+      rgba(234, 242, 255, 0) 30%,
+      rgba(255, 255, 255, 0) 70%,
+      #fff 90%,
+      #fff 100%);
+}
+
+.ruler-left,
+.ruler-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  animation: floatBG 10s ease-in-out infinite;
+  /* Sync with background */
+}
+
+.ruler-left {
+  left: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.ruler-right {
+  right: 0;
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Ruler Ticks Pattern */
+.ruler-left::before,
+.ruler-right::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 15px;
+  /* Dual gradient for Major and Minor ticks */
+  background-image:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 1px, transparent 1px),
+    /* Major tick */
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+  /* Minor tick */
+  background-size: 100% 80px, 60% 16px;
+  /* Major every 80px, Minor every 16px */
+  background-repeat: repeat-y;
+}
+
+.ruler-left::before {
+  right: 0;
+  background-position: right top, right top;
+}
+
+.ruler-right::before {
+  left: 0;
+  background-position: left top, left top;
+}
+
+.ruler-num {
+  height: 80px;
+  /* Matches Major tick spacing */
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  position: relative;
+  top: -5px;
+  /* Shift up to center text on the tick mark */
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Mono", "Droid Sans Mono", "Source Code Pro", monospace;
+  font-size: 10px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.ruler-left .ruler-num {
+  padding-right: 24px;
+  /* Space from tick marks */
+}
+
+.ruler-right .ruler-num {
+  justify-content: flex-start;
+  padding-left: 24px;
+  /* Space from tick marks */
+}
+
+@media (min-width: 900px) {
+  .bg-rulers {
+    display: block;
+  }
+}
+
+/* Contact Section Styles */
+.contact-card {
+  position: relative;
+  overflow: hidden;
+  background: url("assets/Contact BG.svg") no-repeat center bottom, #fff;
+  background-size: 100% auto;
+  padding: 40px !important;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: stretch;
+  position: relative;
+  z-index: 2;
+}
+
+/* Left Column */
+.contact-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+.contact-heading {
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #0b0b0b;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.highlight-blue {
+  color: #1647FF;
+}
+
+.contact-cta-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.contact-btn {
+  display: inline-flex;
+  background: #1647FF;
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  align-items: center;
+  margin-top: auto;
+}
+
+.social-icons a {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-icons a:hover {
+  background: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.social-icons img {
+  width: 36px;
+  height: 36px;
+  transition: filter 0.3s ease;
+}
+
+.social-icons a:hover img {
+  /* Filter to turn black to #1647FF (Blue) */
+  filter: invert(18%) sepia(91%) saturate(5839%) hue-rotate(233deg) brightness(96%) contrast(106%);
+}
+
+/* Right Column - Form */
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+
+.contact-form input {
+  width: 100%;
+  padding: 8px 16px;
+  border: 1px solid rgba(22, 71, 255, 0.25);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.contact-form textarea {
+  width: 100%;
+  padding: 8px 16px;
+  border: 1px solid rgba(22, 71, 255, 0.25);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 15px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  outline: none;
+  resize: none;
+  height: 100px;
+  overflow-y: auto;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  background: white;
+  border-color: #1647FF;
+  box-shadow: 0 4px 12px rgba(22, 71, 255, 0.15);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #9ca3af;
+}
+
+.form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 0;
+}
+
+.form-footer .social-icons {
+  display: none;
+}
+
+.submit-btn {
+  background: #1647FF;
+  color: white;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.submit-btn:hover {
+  background: #000;
+  color: #fff;
+}
+
+/* Mobile Responsive */
+@media (max-width: 767px) {
+  .contact-card {
+    padding: 40px 20px !important;
+    min-height: auto;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contact-heading {
+    font-size: 28px;
+    text-align: left;
+  }
+
+  .contact-cta-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contact-btn {
+    width: fit-content;
+    align-self: flex-start;
+    font-size: 16px !important;
+    padding: 12px 28px !important;
+  }
+
+  .social-icons {
+    justify-content: flex-start;
+  }
+
+  .contact-right {
+    padding: 0;
+  }
+
+  .contact-watermark {
+    font-size: 60px;
+    bottom: 10px;
+  }
+
+  .form-footer {
+    margin-top: 0;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .submit-btn {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .contact-left .social-icons {
+    display: none;
+  }
+
+  .form-footer .social-icons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-watermark {
+    font-size: 48px;
+  }
 }

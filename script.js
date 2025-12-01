@@ -272,3 +272,49 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+
+/* Impact Number Counter Animation */
+document.addEventListener('DOMContentLoaded', () => {
+  const counterElement = document.getElementById('impact-counter');
+  if (!counterElement) return;
+
+  const targetValue = 14;
+  const duration = 1500; // 1.5 seconds
+  let startTime = null;
+  let isAnimating = false;
+
+  const animateCounter = (timestamp) => {
+    if (!startTime) startTime = timestamp;
+    const progress = timestamp - startTime;
+    const percentage = Math.min(progress / duration, 1);
+
+    // Gentler easing (easeOutCubic) - Faster ending than Quart/Expo
+    const easeOutCubic = (x) => 1 - Math.pow(1 - x, 3);
+
+    const currentValue = Math.floor(easeOutCubic(percentage) * targetValue);
+    counterElement.textContent = currentValue;
+
+    if (progress < duration) {
+      window.requestAnimationFrame(animateCounter);
+    } else {
+      counterElement.textContent = targetValue;
+      isAnimating = false;
+    }
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Reset and start animation every time it enters viewport
+        startTime = null;
+        counterElement.textContent = '0';
+        if (!isAnimating) {
+          isAnimating = true;
+          window.requestAnimationFrame(animateCounter);
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+
+  observer.observe(counterElement);
+});
